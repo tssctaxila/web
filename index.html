@@ -3,191 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TSSCT - RNT | Portal</title>
+    <title>The Scholars Science | Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #ffffff;
-            --accent: #6366f1; /* Modern Indigo */
-            --glass: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
+            --accent: #6366f1; 
+            --accent-glow: rgba(99, 102, 241, 0.4);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.15);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
-            background: #0f172a; /* Fallback */
-            /* Use a high-quality educational background image */
-            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), 
+            align-items: center;
+            justify-content: center;
+            background: #0f172a;
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), 
                         url('https://images.unsplash.com/photo-1541339907198-e08756ebafe3?auto=format&fit=crop&q=80&w=2070');
             background-size: cover;
             background-position: center;
-            overflow: hidden;
             color: white;
+            overflow-x: hidden;
         }
 
-        /* Side Navigation Area */
-        .sidebar {
-            width: 350px;
-            padding: 40px;
+        /* Animated Background Blob */
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: var(--accent);
+            filter: blur(100px);
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.15;
+            animation: move 25s infinite alternate;
+        }
+
+        @keyframes move {
+            from { transform: translate(-30%, -30%); }
+            to { transform: translate(30%, 30%); }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 40px 20px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        /* Logo Styling */
+        .logo-container {
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .logo-container img {
+            width: 100px; /* Adjust size as needed */
+            height: 100px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 15px var(--accent-glow));
+            transition: transform 0.3s ease;
+        }
+        
+        /* If you don't have a logo yet, this CSS creates a nice placeholder icon */
+        .logo-placeholder {
+            width: 80px;
+            height: 80px;
+            background: var(--accent);
+            border-radius: 50%;
+            margin: 0 auto;
             display: flex;
-            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            backdrop-filter: blur(10px);
-            background: rgba(0, 0, 0, 0.2);
-            border-right: 1px solid var(--glass-border);
-        }
-
-        .institute-logo {
-            margin-bottom: 50px;
-        }
-
-        .institute-logo h1 {
+            font-size: 2rem;
             font-weight: 800;
-            font-size: 1.8rem;
+            box-shadow: 0 0 30px var(--accent-glow);
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        .logo-placeholder img{
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .header {
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header h1 {
+            font-weight: 800;
+            font-size: 2.2rem;
             letter-spacing: -1px;
-            line-height: 1;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, #fff, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .institute-logo span {
+        .header p {
             color: var(--accent);
-            font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            font-weight: 400;
+            letter-spacing: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
 
-        /* Card-style Navigation Links */
         .campus-selection {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
         }
 
         .campus-card {
             background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
-            padding: 25px;
+            padding: 22px;
             border-radius: 20px;
             text-decoration: none;
             color: white;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
         }
+
+        /* Staggered Animation for Links */
+        .campus-card:nth-child(1) { animation-delay: 0.4s; }
+        .campus-card:nth-child(2) { animation-delay: 0.6s; }
+        .campus-card:nth-child(3) { animation-delay: 0.8s; }
 
         .campus-card:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
             border-color: var(--accent);
-        }
-
-        .campus-card.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 0 20px var(--accent-glow);
         }
 
         .campus-card h3 {
             font-size: 1.1rem;
-            margin-bottom: 5px;
+            font-weight: 700;
+            margin-bottom: 4px;
         }
 
         .campus-card p {
-            font-size: 0.8rem;
-            opacity: 0.7;
+            font-size: 0.85rem;
+            opacity: 0.6;
         }
 
-        /* Floating Content Area */
-        main {
-            flex-grow: 1;
-            padding: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .iframe-wrapper {
-            width: 100%;
-            height: 100%;
-            background: white;
-            border-radius: 30px;
-            overflow: hidden;
-            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
-            position: relative;
-            animation: slideIn 1s ease-out;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(30px); }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Decorative Element */
-        .badge {
-            position: absolute;
-            top: 40px;
-            right: 40px;
-            background: var(--accent);
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+        @media (max-width: 480px) {
+            .header h1 { font-size: 1.7rem; }
+            .container { padding: 15px; }
+            .logo-placeholder { width: 60px; height: 60px; font-size: 1.5rem; }
         }
-
+        #dev{
+            color: #a5b4fc;
+            font-size: 10px;
+        }
     </style>
 </head>
 <body>
 
-    <aside class="sidebar">
-        <div class="institute-logo">
+    <div class="blob"></div>
+
+    <main class="container">
+        <div class="logo-container">
+            <div class="logo-placeholder"> <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK3YdZzopnuFScwrGvPamm8cBYPCIUF0FIOw&s" alt=""></div>
+        </div>
+
+        <header class="header">
             <h1>The Scholars Science</h1>
-            <span>College & School, Taxila</span>
-        </div>
+            <p>College & School, Taxila</p>
+            <p id="dev">Developed By: Arsalan khan</p>
+        </header>
 
-        <div class="campus-selection">
-            <a href="https://script.google.com/macros/s/AKfycbzFza1IPfjgUmvqHClnCwGwJAZokU0OtnH5DgvsCx1brFoqpSu76_UO99le4WcM4cSGtg/exec" target="_self" class="campus-card active" onclick="updateUI(this, 'Downtown Core')">
+        <nav class="campus-selection">
+            <a href="https://script.google.com/macros/s/AKfycbzFza1IPfjgUmvqHClnCwGwJAZokU0OtnH5DgvsCx1brFoqpSu76_UO99le4WcM4cSGtg/exec" class="campus-card">
                 <h3>Campus I</h3>
-                <p>College Section-Boys/Girls</p>
+                <p>College Section (Boys & Girls)</p>
             </a>
 
-             <a href="https://script.google.com/macros/s/AKfycbxgBj2BibpBJuDkgb5DhEIxH0l8jKNIVv2H0x81V5HCr060Pv4RlcDR5mNwuoIWmzdUYA/exec" target="_self" class="campus-card" onclick="updateUI(this, 'East Harbor')">
+            <a href="https://script.google.com/macros/s/AKfycbxgBj2BibpBJuDkgb5DhEIxH0l8jKNIVv2H0x81V5HCr060Pv4RlcDR5mNwuoIWmzdUYA/exec" class="campus-card">
                 <h3>Campus II</h3>
-                <p>Middle & Secondary-Girls</p>
+                <p>Middle & Secondary (Girls)</p>
             </a>
 
-            <a href="https://script.google.com/macros/s/AKfycbyFnyu6S3PNqFJ3YojmtGW7QF0vd5VAf51tEiJBLTIXi44o6l63H31BQ8dqXdBmbCLc/exec" target="_self" class="campus-card" onclick="updateUI(this, 'Downtown Core')">
+            <a href="https://script.google.com/macros/s/AKfycbyFnyu6S3PNqFJ3YojmtGW7QF0vd5VAf51tEiJBLTIXi44o6l63H31BQ8dqXdBmbCLc/exec" class="campus-card">
                 <h3>Campus III</h3>
-                <p>Middle & Secondary-Boys</p>
+                <p>Middle & Secondary (Boys)</p>
             </a>
+        </nav>
+    </main>
 
-           
-        </div>
-    </aside>
-    
-    <script>
-        function updateUI(el, location) {
-            // Manage Active State
-            document.querySelectorAll('.campus-card').forEach(card => card.classList.remove('active'));
-            el.classList.add('active');
-
-            // Update Badge
-            document.getElementById('location-badge').innerText = location;
-
-            // Optional: Subtle vibration or sound effect could go here
-        }
-    </script>
 </body>
 </html>
-
